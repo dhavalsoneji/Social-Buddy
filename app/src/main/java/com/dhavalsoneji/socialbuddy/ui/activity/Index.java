@@ -1,6 +1,9 @@
 package com.dhavalsoneji.socialbuddy.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,12 +12,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.dhavalsoneji.socialbuddy.R;
 import com.dhavalsoneji.socialbuddy.ui.viewmodel.IndexViewModel;
 import com.dhavalsoneji.socialbuddy.utils.AppConstants;
 import com.dhavalsoneji.socialbuddy.utils.Applog;
+import com.dhavalsoneji.socialbuddy.utils.Utils;
 import com.kittyapplication.core.utils.imagepick.OnImagePickedListener;
+import com.twitter.sdk.android.tweetcomposer.Card;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
 
@@ -37,7 +44,7 @@ public class Index extends AppCompatActivity
         mViewModel.initFabButton();
         mViewModel.initDrawer();
         mViewModel.initTwitter();
-
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.BROADCAST_TWEET_COMPOSE_SUCCESS));
     }
 
     @Override
@@ -66,6 +73,7 @@ public class Index extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
             return true;
         }
 
@@ -105,16 +113,31 @@ public class Index extends AppCompatActivity
 
     @Override
     public void onImagePicked(int requestCode, File file) {
-        mViewModel.setImageUri(Uri.parse(file.toString()));
+        Uri uri = Uri.fromFile(file);
+        startActivity(Utils.getComposeTweetIntent(Index.this, uri));
     }
 
     @Override
     public void onImagePickError(int requestCode, Exception e) {
-        Applog.e(TAG, e.getMessage(),e);
+        Applog.e(TAG, e.getMessage(), e);
     }
 
     @Override
     public void onImagePickClosed(int requestCode) {
 
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // internet lost alert dialog method call from here...
+            mViewModel.refreshUserTimeline();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 }

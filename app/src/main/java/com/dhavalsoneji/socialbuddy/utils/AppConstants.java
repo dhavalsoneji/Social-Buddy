@@ -12,4 +12,5 @@ public class AppConstants {
     public static final String P_EMAIL = PREFERENCE_NAME + "_email";
     public static final String P_HAS_EMAIL_PERMISSION = PREFERENCE_NAME + "_has_email_permission";
     public static final int REQ_CODE_PICK_IMAGE = 1001;
+    public static final String BROADCAST_TWEET_COMPOSE_SUCCESS = "broadcast_tweet_compose_success";
 }

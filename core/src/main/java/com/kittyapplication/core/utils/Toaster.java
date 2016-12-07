@@ -10,12 +10,14 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.kittyapplication.core.CoreApp;
+import com.kittyapplication.core.R;
 
 
 public class Toaster {
 
     @IntDef({Toast.LENGTH_LONG, Toast.LENGTH_SHORT})
-    private @interface ToastLength {}
+    private @interface ToastLength {
+    }
 
     public static void shortToast(View view, Window window, @StringRes int text) {
         Toast toast = makeToast(CoreApp.getInstance().getString(text), Toast.LENGTH_SHORT);
@@ -50,6 +52,10 @@ public class Toaster {
 
     public static void longToast(@StringRes int text) {
         longToast(CoreApp.getInstance().getString(text));
+    }
+
+    public static void longToast() {
+        longToast(CoreApp.getInstance().getString(R.string.error_occured));
     }
 
     public static void longToast(String text) {

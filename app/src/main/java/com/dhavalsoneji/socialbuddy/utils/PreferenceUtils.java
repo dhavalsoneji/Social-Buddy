@@ -13,6 +13,19 @@ import com.twitter.sdk.android.core.TwitterSession;
  */
 
 public class PreferenceUtils {
+
+    /**
+     * Clear Data From Preference
+     *
+     * @param ctx
+     */
+    public static void clearPreference(Context ctx) {
+        SharedPreferences settings = ctx.getSharedPreferences(AppConstants.PREFERENCE_NAME, ctx.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+    }
+
     /**
      * Insert string value in Shared Preferences
      *

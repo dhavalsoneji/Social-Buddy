@@ -22,15 +22,17 @@ public class DialogUtils {
     }
 
     public static Dialog createDialog(Context context,
-                                      @StringRes int titleId, @StringRes int messageId, View view,
+                                      @StringRes int titleId, @StringRes int messageId,
+                                      @StringRes int postiveTitle, @StringRes int negativeTitle,
+                                      View view,
                                       DialogInterface.OnClickListener positiveClickListener,
                                       DialogInterface.OnClickListener negativeClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(titleId);
         builder.setMessage(messageId);
         builder.setView(view);
-        builder.setPositiveButton(R.string.dlg_ok, positiveClickListener);
-        builder.setNegativeButton(R.string.dlg_cancel, negativeClickListener);
+        builder.setPositiveButton(postiveTitle, positiveClickListener);
+        builder.setNegativeButton(negativeTitle, negativeClickListener);
 
         return builder.create();
     }
